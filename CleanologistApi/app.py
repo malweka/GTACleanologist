@@ -25,6 +25,17 @@ def init_services():
             db.session.add(service)
     db.session.commit()
 
+@app.route('/api/contact-us', methods=['POST'])
+def contact_us():
+   data = request.get_json()
+   
+   required_fields = ['contact_name', 'contact_email', 'contact_telephone', 'message']
+   for field in required_fields:
+       if not data.get(field):
+           return jsonify({'error': f'Missing required field: {field}'}), 400
+           
+   return jsonify({'message': 'Contact received successfully'}), 200
+
 @app.route('/api/contacts', methods=['POST'])
 def create_contact():
     data = request.get_json()
