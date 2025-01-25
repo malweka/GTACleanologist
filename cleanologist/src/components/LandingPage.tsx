@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
+
 import { Button } from "@/components/ui/button"
 
 interface ServiceProps {
@@ -34,11 +27,6 @@ const LandingPage: React.FC = () => {
     }
   ];
 
-  const scrollToService = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-light-blue to-fresh-green">
       {/* Hero Section */}
@@ -60,7 +48,7 @@ const LandingPage: React.FC = () => {
               {/* Placeholder for hero image */}
               <div className="relative">
                 <img 
-                  src="/api/placeholder/600/400" 
+                  src="/cleaning.jpeg" 
                   alt="Cleaning service illustration" 
                   className="rounded-lg shadow-xl"
                 />
