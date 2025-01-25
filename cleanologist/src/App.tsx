@@ -1,9 +1,22 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navigation from './components/Navigation';
 import LandingPage from './components/LandingPage';
+import HouseCleaning from './components/HouseCleaning';
+import HomeImprovements from './components/HomeImprovements';
+import DeepCleaning from './components/DeepCleaning';
 
 const App: React.FC = () => {
   return (
-    <LandingPage />
+    <Router>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/services/house-cleaning" element={<HouseCleaning />} />
+        <Route path="/services/home-improvements" element={<HomeImprovements />} />
+        <Route path="/services/deep-cleaning" element={<DeepCleaning />} />
+      </Routes>
+    </Router>
   );
 };
 
