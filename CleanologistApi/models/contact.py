@@ -7,3 +7,6 @@ class Contact(db.Model):
     email = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     address = db.Column(db.String(200), nullable=False)
+    city = db.Column(db.String(20), nullable=False)
+    province = db.Column(db.String(20), nullable=False)
+    postal_code = db.Column(db.String(20), nullable=False)

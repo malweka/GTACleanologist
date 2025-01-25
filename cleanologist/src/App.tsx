@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage';
 import HouseCleaning from './components/HouseCleaning';
 import HomeImprovements from './components/HomeImprovements';
 import DeepCleaning from './components/DeepCleaning';
+import ContactUs from './components/ContactUs';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/services/house-cleaning" element={<HouseCleaning />} />
         <Route path="/services/home-improvements" element={<HomeImprovements />} />
         <Route path="/services/deep-cleaning" element={<DeepCleaning />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </Router>
   );
