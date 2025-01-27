@@ -1,6 +1,5 @@
-from extensions import db
+from ..extensions import db
 from datetime import datetime
-from models import IdGenMixin
 
 class ScheduleException(db.Model):
     __tablename__ = 'schedule_exceptions'

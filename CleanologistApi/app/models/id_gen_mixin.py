@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base
 import os
 from dotenv import load_dotenv
 import time
-from extensions import db
+from ..extensions import db
 import uuid
 
 class IdGenMixin:

@@ -12,7 +12,10 @@ class DbInitializer:
         self.app = app
         self.database_url = os.getenv('DATABASE_URL')
         self.database_engine = os.getenv('DATABASE_ENGINE', 'sqlite')
-        self.base_path = Path(__file__).parent.parent
+        
+        # Get the path to the root directory (parent of app directory)
+        self.root_path = Path(__file__).parent.parent.parent
+        self.db_scripts_path = self.root_path / 'db'
 
     def init_db(self):
         with self.app.app_context():
@@ -31,14 +34,21 @@ class DbInitializer:
             conn = sqlite3.connect(db_path)
             conn.close()
             
-            ddl_path = self.base_path / 'db' / 'ddl_sqlite.sql'
+            # Use the corrected path to the db scripts
+            ddl_path = self.db_scripts_path / 'ddl_sqlite.sql'
+            if not ddl_path.exists():
+                raise FileNotFoundError(f"DDL file not found at {ddl_path}")
+                
             with open(ddl_path) as f:
                 sql_commands = f.read().split(';')
                 for command in sql_commands:
                     if command.strip():
                         self.db.session.execute(text(command))
             
-            seed_path = self.base_path / 'db' / 'seed_sqlite.sql'
+            seed_path = self.db_scripts_path / 'seed_sqlite.sql'
+            if not seed_path.exists():
+                raise FileNotFoundError(f"Seed file not found at {seed_path}")
+                
             with open(seed_path) as f:
                 sql_commands = f.read().split(';')
                 for command in sql_commands:
@@ -48,14 +58,20 @@ class DbInitializer:
             self.db.session.commit()
 
     def _init_postgres(self):
-        ddl_path = self.base_path / 'db' / 'ddl_postgres.sql'
+        ddl_path = self.db_scripts_path / 'ddl_postgres.sql'
+        if not ddl_path.exists():
+            raise FileNotFoundError(f"DDL file not found at {ddl_path}")
+            
         with open(ddl_path) as f:
             sql_commands = f.read().split(';')
             for command in sql_commands:
                 if command.strip():
                     self.db.session.execute(text(command))
         
-        seed_path = self.base_path / 'db' / 'seed_postgres.sql'
+        seed_path = self.db_scripts_path / 'seed_postgres.sql'
+        if not seed_path.exists():
+            raise FileNotFoundError(f"Seed file not found at {seed_path}")
+            
         with open(seed_path) as f:
             sql_commands = f.read().split(';')
             for command in sql_commands:
