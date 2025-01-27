@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date, time
 from enum import Enum
-from extensions import db
+from ..extensions import db
 
 class ScheduleStatus(Enum):
     DRAFT = 'draft'

@@ -1,4 +1,4 @@
-from extensions import db
+from ..extensions import db
 
 class ContractorService(db.Model):
     __tablename__ = 'contractor_services'

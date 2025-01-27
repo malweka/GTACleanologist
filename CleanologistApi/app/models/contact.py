@@ -1,4 +1,4 @@
-from extensions import db
+from ..extensions import db
 
 class Contact(db.Model):
     __tablename__ = 'contacts'

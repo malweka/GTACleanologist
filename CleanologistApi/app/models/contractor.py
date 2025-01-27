@@ -1,4 +1,4 @@
-from extensions import db
+from ..extensions import db
 from datetime import datetime
 
 class Contractor(db.Model):
@@ -15,5 +15,6 @@ class Contractor(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     services = db.relationship('Service', secondary='contractor_services')
+    contractor_services = db.relationship('ContractorService')
     weekly_schedules = db.relationship('WeeklySchedule', backref='contractor')
     exceptions = db.relationship('ScheduleException', backref='contractor')
