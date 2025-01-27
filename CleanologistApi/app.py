@@ -1,32 +1,32 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from services import DbInitializer
+from models import Contact, Service
+from extensions import db
 import os
-from datetime import datetime
-import uuid
 
+load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cleanologist.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+db.init_app(app)
+initializer = DbInitializer(db, app)
 
-from models.contact import Contact
-from models.service import Service
-from models.appointment import Appointment
+CORS(app, resources={
+        r"/api/*": {
+            "origins": "*",  # change later
+            "methods": ["GET", "POST", "OPTIONS"],
+            "allow_headers": ["Content-Type"]
+        }
+    })
 
-def init_services():
-    default_services = [
-        Service(id=100, service_name='deep-cleaning', service_description='Deep Cleaning'),
-        Service(id=101, service_name='home-improvements', service_description='Home Improvements'),
-        Service(id=102, service_name='house-cleaning', service_description='House Cleaning')
-    ]
-    
-    for service in default_services:
-        if not Service.query.get(service.id):
-            db.session.add(service)
-    db.session.commit()
-
-@app.route('/api/contact-us', methods=['POST'])
+@app.route('/api/contact-us', methods=['POST', 'OPTIONS'])
 def contact_us():
+   if request.method == "OPTIONS":
+        return jsonify({}), 200
+   
    data = request.get_json()
    
    required_fields = ['contact_name', 'contact_email', 'contact_telephone', 'message']
@@ -36,7 +36,7 @@ def contact_us():
            
    return jsonify({'message': 'Contact received successfully'}), 200
 
-@app.route('/api/contacts', methods=['POST'])
+@app.route('/api/appointments', methods=['POST'])
 def create_contact():
     data = request.get_json()
     
@@ -58,21 +58,22 @@ def create_contact():
     db.session.add(contact)
     db.session.flush()
     
-    appointment = Appointment(
-        appointment_number=str(uuid.uuid4())[:20],
-        service_id=data['service_requested'],
-        contact_id=contact.id,
-        service_date=datetime.fromisoformat(data['appointment_date_time']),
-        service_notes=data.get('service_notes', '')
-    )
+    # appointment = Appointment(
+    #     appointment_number=str(uuid.uuid4())[:20],
+    #     service_id=data['service_requested'],
+    #     contact_id=contact.id,
+    #     service_date=datetime.fromisoformat(data['appointment_date_time']),
+    #     service_notes=data.get('service_notes', '')
+    # )
     
-    db.session.add(appointment)
+    # db.session.add(appointment)
     db.session.commit()
     
     return jsonify({'message': 'Contact and appointment created successfully'}), 201
 
-if __name__ == '__main__':
+if __name__ == '__main__' or __name__ == 'app':
     with app.app_context():
-        db.create_all()
-        init_services()
-    app.run(debug=True)
+        #db.create_all()
+        initializer.init_db()
+        
+    app.run(debug=True, port=5050)
