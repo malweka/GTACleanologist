@@ -1,6 +1,3 @@
-Here’s the updated README in Markdown format:
-
-```markdown
 # Cleanologist - A Python Learning Project for Service Management
 
 Cleanologist is a **work-in-progress** project designed for learning and experimenting with Python. It serves as a platform to explore concepts like API design, contractor scheduling, and database integration in a practical context. While the project provides functionality for managing contractors, scheduling appointments, and handling bookings, it is primarily intended as a learning exercise and not yet a comprehensive service management solution.
@@ -133,6 +130,3 @@ Contributions are welcome! As this is a learning project, suggestions, bug fixes
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-```
-
-Let me know if you'd like to tweak anything further!
